@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Profil Utilisateur - TaSli7a</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #FF9800;
+            --accent: #FFEB3B;
+            --neutral: #9E9E9E;
+            --dark: #333333;
+            --light: #FAFAFA;
+            --border: #E0E0E0;
+            --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+        }
+
+        .header {
+            position: fixed;
+            top: 15px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 9%;
+            box-shadow: var(--box-shadow);
+            margin: 0 20px;
+            border-radius: 15px;
+        }
+
+        .header .logo {
+            font-size: 2.5rem;
+            font-weight: bolder;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .header .logo span {
+            color: var(--primary);
+        }
+
+        .main-content {
+            margin-top: 120px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        .profile-sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            height: fit-content;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+        }
+
+        .stylized-profile-image {
+            box-shadow: 0 4px 24px rgba(76,175,80,0.18), 0 1.5px 8px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s, filter 0.3s;
+            cursor: pointer;
+            border: 3px solid var(--primary);
+            background: #f8f8f8;
+            object-fit: cover;
+            width: 150px;
+            height: 150px;
+            display: block;
+        }
+
+        .profile-image-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.35);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            border-radius: 50%;
+            font-size: 2.5rem;
+            pointer-events: none;
+            transition: opacity 0.25s;
+        }
+
+        .profile-image-wrapper:hover .profile-image-overlay,
+        .stylized-profile-image:focus + .profile-image-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile-image-wrapper:hover .stylized-profile-image {
+            filter: brightness(0.75) blur(1px);
+            box-shadow: 0 8px 32px rgba(76,175,80,0.25);
+        }
+
+        .profile-info h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1.6rem;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
+        }
+
+        .btn-primary:hover {
+            background: #388E3C;
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .content-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .reservations-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .reservation-card {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .reservation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .reservation-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .reservation-title {
+            font-size: 1.8rem;
+            color: var(--dark);
+        }
+
+        .reservation-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 1.4rem;
+        }
+
+        .status-confirmed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .reservation-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 1.4rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-item i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .reservation-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-button {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-cancel {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-reschedule {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .btn-contact {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-sidebar {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .reservation-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .reservation-actions {
+                flex-direction: column;
+            }
+
+            .action-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .edit-input {
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            font-size: 1.6rem;
+            padding: 1.2rem 1.4rem;
+            box-shadow: 0 2px 8px rgba(76,175,80,0.08);
+            margin-bottom: 8px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .edit-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(76,175,80,0.18);
+            outline: none;
+        }
+
+        .btn-primary, .btn-secondary {
+            border-radius: 8px;
+            font-size: 1.6rem;
+            padding: 12px 0;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 4px rgba(76,175,80,0.08);
+        }
+
+        .btn-primary:hover {
+            background: #388E3C;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(76,175,80,0.18);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div id="menu-btn" class="fas fa-bars"></div>
+        <a href="#" class="logo"> <span>TaSli7a</span>dz</a>
+        <nav class="navbar">
+            <a href="index.html">Accueil</a>
+            <a href="#services">Services</a>
+            <a href="prestataires.html">Prestataires</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="profile-sidebar">
+            <div class="profile-image-wrapper" style="position:relative; width:150px; margin:0 auto 20px;">
+                <img id="profileImage" src="https://randomuser.me/api/portraits/men/2.jpg" alt="Photo de profil" class="profile-image stylized-profile-image">
+                <input type="file" id="uploadPhoto" accept="image/*" style="display:none">
+                <div class="profile-image-overlay" id="profileImageOverlay">
+                    <i class="fas fa-camera"></i>
+                </div>
+            </div>
+            <div class="profile-info" id="profileInfoView">
+                <h2 id="userName">Adel Bencheikh</h2>
+                <p id="userEmail"><i class="fas fa-envelope"></i> adel.bencheikh@email.com</p>
+                <p id="userPhone"><i class="fas fa-phone"></i> 06 12 34 56 78</p>
+                <button class="btn-primary" id="editProfileBtn" style="width:100%;margin-top:15px;">Modifier mes informations</button>
+            </div>
+            <form id="profileEditForm" style="display:none;flex-direction:column;gap:10px;">
+                <input type="text" id="editName" class="box edit-input" placeholder="Nom complet">
+                <input type="email" id="editEmail" class="box edit-input" placeholder="Email">
+                <input type="tel" id="editPhone" class="box edit-input" placeholder="Téléphone">
+                <div style="display:flex;gap:10px;">
+                  <button type="submit" class="btn-primary" style="flex:1;">Enregistrer</button>
+                  <button type="button" class="btn-secondary" id="cancelEditBtn" style="flex:1;">Annuler</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="profile-content">
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar-check"></i>
+                    Mes Réservations
+                </h2>
+                <div class="reservations-list">
+                    <!-- Les réservations seront ajoutées ici dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Données simulées des réservations
+            const reservations = [
+                {
+                    id: 1,
+                    prestataire: "John Doe",
+                    service: "Installation électrique",
+                    date: "15 mai 2025",
+                    heure: "10:00",
+                    adresse: "123 Rue des Lilas, Alger",
+                    status: "confirmed",
+                    prix: "5000 DA"
+                },
+                {
+                    id: 2,
+                    prestataire: "Électro Pro",
+                    service: "Dépannage électrique",
+                    date: "18 mai 2025",
+                    heure: "14:30",
+                    adresse: "45 Boulevard des Roses, Alger",
+                    status: "pending",
+                    prix: "3500 DA"
+                },
+                {
+                    id: 3,
+                    prestataire: "Marie Martin",
+                    service: "Mise aux normes",
+                    date: "20 mai 2025",
+                    heure: "09:00",
+                    adresse: "78 Avenue des Palmiers, Alger",
+                    status: "cancelled",
+                    prix: "7500 DA"
+                }
+            ];
+
+            // Affichage des réservations
+            const reservationsList = document.querySelector('.reservations-list');
+            reservationsList.innerHTML = reservations.map(reservation => `
+                <div class="reservation-card">
+                    <div class="reservation-header">
+                        <h3 class="reservation-title">${reservation.service}</h3>
+                        <span class="reservation-status status-${reservation.status}">
+                            ${reservation.status === 'confirmed' ? 'Confirmée' : 
+                              reservation.status === 'pending' ? 'En attente' : 'Annulée'}
+                        </span>
+                    </div>
+                    <div class="reservation-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <span>${reservation.prestataire}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>${reservation.date} à ${reservation.heure}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${reservation.adresse}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-tag"></i>
+                            <span>${reservation.prix}</span>
+                        </div>
+                    </div>
+                    <div class="reservation-actions">
+                        ${reservation.status !== 'cancelled' ? `
+                            <button class="action-button btn-contact">
+                                <i class="fas fa-phone"></i>
+                                Contacter
+                            </button>
+                            <button class="action-button btn-reschedule">
+                                <i class="fas fa-clock"></i>
+                                Reprogrammer
+                            </button>
+                            <button class="action-button btn-cancel">
+                                <i class="fas fa-times"></i>
+                                Annuler
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            // Gestion des actions sur les réservations
+            document.querySelectorAll('.action-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const action = this.textContent.trim();
+                    alert(`Action "${action}" en cours de développement`);
+                });
+            });
+        });
+
+        // --- Gestion modification profil utilisateur stylée ---
+        const profileImage = document.getElementById('profileImage');
+        const uploadPhoto = document.getElementById('uploadPhoto');
+        const profileImageOverlay = document.getElementById('profileImageOverlay');
+        const profileInfoView = document.getElementById('profileInfoView');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const profileEditForm = document.getElementById('profileEditForm');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const editName = document.getElementById('editName');
+        const editEmail = document.getElementById('editEmail');
+        const editPhone = document.getElementById('editPhone');
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const userPhone = document.getElementById('userPhone');
+
+        // Charger les infos depuis localStorage si dispo
+        function loadProfileInfos() {
+          const data = JSON.parse(localStorage.getItem('userProfile')||'{}');
+          if(data.name) userName.textContent = editName.value = data.name;
+          if(data.email) userEmail.innerHTML = `<i class='fas fa-envelope'></i> ${editEmail.value = data.email}`;
+          if(data.phone) userPhone.innerHTML = `<i class='fas fa-phone'></i> ${editPhone.value = data.phone}`;
+          if(data.photo) profileImage.src = data.photo;
+        }
+        loadProfileInfos();
+
+        // Changement de photo par clic sur la photo
+        profileImage.addEventListener('click', e => {
+          uploadPhoto.click();
+        });
+        profileImageOverlay.addEventListener('click', e => {
+          uploadPhoto.click();
+        });
+        uploadPhoto.addEventListener('change', e => {
+          const file = uploadPhoto.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+              profileImage.src = evt.target.result;
+              // Sauvegarder en localStorage
+              let data = JSON.parse(localStorage.getItem('userProfile')||'{}');
+              data.photo = evt.target.result;
+              localStorage.setItem('userProfile', JSON.stringify(data));
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        editProfileBtn.addEventListener('click', e => {
+          e.preventDefault();
+          profileInfoView.style.display = 'none';
+          profileEditForm.style.display = 'flex';
+          // Pré-remplir
+          editName.value = userName.textContent;
+          editEmail.value = userEmail.textContent.replace(/^[^\s]+\s/, '');
+          editPhone.value = userPhone.textContent.replace(/^[^\s]+\s/, '');
+        });
+
+        profileEditForm.addEventListener('submit', e => {
+          e.preventDefault();
+          userName.textContent = editName.value;
+          userEmail.innerHTML = `<i class='fas fa-envelope'></i> ${editEmail.value}`;
+          userPhone.innerHTML = `<i class='fas fa-phone'></i> ${editPhone.value}`;
+          // Sauvegarder en localStorage
+          localStorage.setItem('userProfile', JSON.stringify({
+            name: editName.value,
+            email: editEmail.value,
+            phone: editPhone.value,
+            photo: profileImage.src
+          }));
+          profileEditForm.style.display = 'none';
+          profileInfoView.style.display = 'block';
+        });
+
+        cancelEditBtn.addEventListener('click', e => {
+          e.preventDefault();
+          profileEditForm.style.display = 'none';
+          profileInfoView.style.display = 'block';
+        });
+        // --- Fin gestion modification profil utilisateur stylée ---
+    </script>
+</body>
+</html>

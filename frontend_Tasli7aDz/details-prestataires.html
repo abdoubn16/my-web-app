@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Détails Prestataire - TaSli7a</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #FF9800;
+            --accent: #FFEB3B;
+            --neutral: #9E9E9E;
+            --dark: #333333;
+            --light: #FAFAFA;
+            --border: #E0E0E0;
+            --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+        }
+
+        .header {
+            position: fixed;
+            top: 15px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 9%;
+            box-shadow: var(--box-shadow);
+            margin: 0 20px;
+            border-radius: 15px;
+        }
+
+        .header .logo {
+            font-size: 2.5rem;
+            font-weight: bolder;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .header .logo span {
+            color: var(--primary);
+        }
+
+        .header .navbar {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .header .navbar a {
+            font-size: 1.7rem;
+            color: var(--dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .header .navbar a:hover {
+            color: var(--primary);
+        }
+
+        #menu-btn {
+            font-size: 2.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            display: none;
+        }
+
+        .profile-menu {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-picture {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+        }
+
+        .profile-options {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .profile-connected:hover .profile-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-options a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 1.7rem;
+            transition: background-color 0.3s;
+        }
+
+        .profile-options a i {
+            font-size: 1.7rem;
+            color: var(--primary);
+        }
+
+        .profile-options a.logout {
+            border-top: 1px solid var(--border);
+        }
+
+        .profile-options a.logout i {
+            color: #dc3545;
+        }
+
+        .login-btn {
+            padding: 8px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+            font-size: 1.7rem;
+        }
+
+        .login-btn:hover {
+            background-color: #388E3C;
+        }
+
+        /* Styles pour le contenu principal */
+        .main-content {
+            margin-top: 120px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .prestataire-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            margin-top: 0;
+            margin-bottom: 40px;
+        }
+
+        .prestataire-profile {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+        }
+
+        .profile-sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .profile-info {
+            text-align: center;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .profile-rating {
+            color: var(--accent);
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .profile-location {
+            color: var(--neutral);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .profile-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-reserver {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reserver:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-contact {
+            background: var(--light);
+            color: var(--dark);
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-contact:hover {
+            background: var(--border);
+        }
+
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .service-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-item i {
+            color: var(--primary);
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .review-item {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .review-author {
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .review-date {
+            color: var(--neutral);
+            font-size: 14px;
+        }
+
+        .review-rating {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .review-content {
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .availability-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--light);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-day:hover {
+            background: var(--border);
+        }
+
+        .calendar-day.available {
+            background: #e8f5e9;
+            color: var(--primary);
+        }
+
+        .calendar-day.unavailable {
+            background: #ffebee;
+            color: #f44336;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 991px) {
+            .header {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #menu-btn {
+                display: block;
+            }
+
+            .header .navbar {
+                position: absolute;
+                top: 99%;
+                left: 0;
+                right: 0;
+                background: white;
+                border-top: 1px solid var(--border);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.3s ease;
+            }
+
+            .header .navbar.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+
+            .header .navbar a {
+                display: block;
+                margin: 1.5rem;
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div id="menu-btn" class="fas fa-bars"></div>
+        <a href="#" class="logo"> <span>TaSli7a</span>dz</a>
+        <nav class="navbar">
+            <a href="index.html">Accueil</a>
+            <a href="#services">Services</a>
+            <a href="prestataires.html">Prestataires</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <div id="profileMenu" class="profile-menu">
+            <div class="profile-connected" style="display: none;">
+                <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile" class="profile-picture">
+                <div class="profile-options">
+                    <a href="#" id="profileLink"><i class="fas fa-user"></i> Mon Profil</a>
+                    <a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+                </div>
+            </div>
+
+            <button class="login-btn" id="loginBtn">
+                <i class="far fa-user"></i>
+                Se connecter
+            </button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="prestataire-profile">
+            <div class="profile-sidebar">
+                <img src="" alt="" class="profile-image" id="prestataire-image">
+                <div class="profile-info">
+                    <h1 class="profile-name" id="prestataire-name"></h1>
+                    <div class="profile-rating" id="prestataire-rating"></div>
+                    <div class="profile-location" id="prestataire-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span></span>
+                    </div>
+                    <div class="profile-contact">
+                        <a href="reservation.html" class="btn-reserver">
+                            <i class="fas fa-calendar-check"></i>
+                            Réserver
+                        </a>
+                        <a href="#" class="btn-contact">
+                            <i class="fas fa-envelope"></i>
+                            Contacter
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-tools"></i>
+                        Services proposés
+                    </h2>
+                    <div class="services-list" id="services-list">
+                        <!-- Services seront ajoutés ici dynamiquement -->
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-star"></i>
+                        Avis clients
+                    </h2>
+                    <div class="reviews-list" id="reviews-list">
+                        <!-- Avis seront ajoutés ici dynamiquement -->
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        Disponibilités
+                    </h2>
+                    <div class="availability-calendar" id="availability-calendar">
+                        <!-- Calendrier sera ajouté ici dynamiquement -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion du menu de profil
+            let isConnected = false;
+            let userType = 'user'; // ou 'provider'
+            const profileMenu = document.getElementById('profileMenu');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileConnected = profileMenu.querySelector('.profile-connected');
+            const profileLink = document.getElementById('profileLink');
+
+            function updateProfileUI() {
+                if (isConnected) {
+                    loginBtn.style.display = 'none';
+                    profileConnected.style.display = 'flex';
+                    // Mise à jour du lien du profil en fonction du type d'utilisateur
+                    profileLink.href = userType === 'provider' ? 'profil-prestataire.html' : 'profil-utilisateur.html';
+                } else {
+                    loginBtn.style.display = 'flex';
+                    profileConnected.style.display = 'none';
+                }
+            }
+
+            loginBtn.addEventListener('click', () => {
+                isConnected = true;
+                updateProfileUI();
+            });
+
+            document.querySelector('.logout').addEventListener('click', (e) => {
+                e.preventDefault();
+                isConnected = false;
+                updateProfileUI();
+            });
+
+            // Menu burger pour mobile
+            const menuBtn = document.getElementById('menu-btn');
+            const navbar = document.querySelector('.navbar');
+
+            menuBtn.addEventListener('click', () => {
+                navbar.classList.toggle('active');
+            });
+
+            updateProfileUI();
+
+            // Récupération des paramètres de l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const prestatairesId = urlParams.get('id');
+            const serviceId = urlParams.get('service');
+
+            // Base de données simulée des prestataires
+            const prestataires = {
+                '1': {
+                    id: 1,
+                    nom: "John Doe",
+                    description: "Électricien professionnel avec 10 ans d'expérience",
+                    services: ["Installation électrique", "Dépannage", "Mise aux normes"],
+                    categorie: "electricien",
+                    localisation: "Alger Centre",
+                    image: "https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg",
+                    note: 4.8,
+                    avis: [
+                        {
+                            auteur: "Marie L.",
+                            note: 5,
+                            commentaire: "Excellent travail, très professionnel",
+                            date: "2025-04-15"
+                        },
+                        {
+                            auteur: "Ahmed K.",
+                            note: 4,
+                            commentaire: "Bon service, ponctuel",
+                            date: "2025-04-10"
+                        }
+                    ],
+                    disponibilites: {
+                        "2025-05-04": ["09:00", "14:00", "16:00"],
+                        "2025-05-05": ["10:00", "15:00"],
+                        "2025-05-06": ["09:00", "11:00", "14:00"]
+                    }
+                },
+                '2': {
+                    id: 2,
+                    nom: "Électro Pro",
+                    description: "Spécialiste en installations électriques industrielles",
+                    services: ["Électricité industrielle", "Automatisation", "Domotique"],
+                    categorie: "electricien",
+                    localisation: "Bab Ezzouar",
+                    image: "https://images.pexels.com/photos/442154/pexels-photo-442154.jpeg",
+                    note: 4.9,
+                    avis: [
+                        {
+                            auteur: "Sophie M.",
+                            note: 5,
+                            commentaire: "Service impeccable",
+                            date: "2025-04-20"
+                        }
+                    ],
+                    disponibilites: {
+                        "2025-05-04": ["10:00", "15:00"],
+                        "2025-05-05": ["09:00", "14:00"],
+                        "2025-05-06": ["11:00", "16:00"]
+                    }
+                }
+            };
+
+            // Récupération des informations du prestataire
+            const prestataire = prestataires[prestatairesId];
+
+            if (prestataire) {
+                // Mise à jour des informations du prestataire
+                document.getElementById('prestataire-image').src = prestataire.image;
+                document.getElementById('prestataire-image').alt = prestataire.nom;
+                document.getElementById('prestataire-name').textContent = prestataire.nom;
+                
+                // Affichage de la note
+                const ratingDiv = document.getElementById('prestataire-rating');
+                const stars = '★'.repeat(Math.floor(prestataire.note)) + '☆'.repeat(5 - Math.floor(prestataire.note));
+                ratingDiv.innerHTML = `${stars} <span>(${prestataire.note}/5 - ${prestataire.avis.length} avis)</span>`;
+                
+                // Affichage de la localisation
+                document.getElementById('prestataire-location').querySelector('span').textContent = prestataire.localisation;
+
+                // Affichage des services
+                const servicesList = document.getElementById('services-list');
+                servicesList.innerHTML = prestataire.services.map(service => `
+                    <div class="service-item">
+                        <i class="fas fa-check"></i>
+                        <span>${service}</span>
+                    </div>
+                `).join('');
+
+                // Affichage des avis
+                const reviewsList = document.getElementById('reviews-list');
+                reviewsList.innerHTML = prestataire.avis.map(avis => `
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="review-author">${avis.auteur}</div>
+                            <div class="review-rating">${'★'.repeat(avis.note)}</div>
+                        </div>
+                        <div class="review-date">${avis.date}</div>
+                        <div class="review-comment">${avis.commentaire}</div>
+                    </div>
+                `).join('');
+
+                // Affichage du calendrier
+                const calendar = document.getElementById('availability-calendar');
+                calendar.innerHTML = '';
+                
+                // En-têtes des jours
+                const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+                days.forEach(day => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'calendar-header';
+                    dayHeader.textContent = day;
+                    calendar.appendChild(dayHeader);
+                });
+
+                // Affichage des disponibilités
+                Object.entries(prestataire.disponibilites).forEach(([date, horaires]) => {
+                    const dateDiv = document.createElement('div');
+                    dateDiv.className = 'calendar-date';
+                    dateDiv.innerHTML = `
+                        <div class="date-header">${new Date(date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}</div>
+                        <div class="time-slots">
+                            ${horaires.map(time => `
+                                <button class="time-slot available">
+                                    <i class="far fa-clock"></i>
+                                    ${time}
+                                </button>
+                            `).join('')}
+                        </div>
+                    `;
+                    calendar.appendChild(dateDiv);
+                });
+            } else {
+                // Gestion du cas où le prestataire n'est pas trouvé
+                document.querySelector('.main-content').innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h2>Prestataire non trouvé</h2>
+                        <p>Désolé, nous n'avons pas trouvé le prestataire demandé.</p>
+                        <a href="service-prestataires.html?service=${serviceId}" class="btn-back">
+                            <i class="fas fa-arrow-left"></i>
+                            Retour aux prestataires
+                        </a>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

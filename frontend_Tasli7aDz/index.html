@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaSli7a - Réservation de services à domicile</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+      .profile-menu {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+
+.profile-options {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.profile-menu:hover .profile-options {
+    opacity: 1;
+    visibility: visible;
+}
+
+.profile-options:hover {
+    opacity: 1;
+    visibility: visible;
+}
+
+.profile-options a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.profile-options a:hover {
+    background-color: #f5f5f5;
+}
+
+.profile-options a i {
+    width: 20px;
+}
+
+.profile-options .logout {
+    color: #dc3545;
+    border-top: 1px solid #eee;
+}
+    /* Style du bouton de connexion */
+.login-btn {
+    padding: 8px 16px;
+    background-color: #00a65a;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #008d4c;
+}
+    </style>
+</head>
+<body>
+    
+<header class="header">
+    <div id="menu-btn" class="fas fa-bars"></div>
+    <a href="#" class="logo"> <span>TaSli7a</span>dz</a>
+    <nav class="navbar">
+        <a href="#home">Accueil</a>
+        <a href="#services">Services</a>
+        <a href="#how-it-works">Comment ça marche</a>
+        <a href="#reviews">Avis clients</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <!-- Menu de profil - Change selon l'état de connexion -->
+    <div class="profile-menu" id="profileMenu">
+        <!-- Version connectée -->
+        <div class="profile-connected" style="display: none;">
+            <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile" class="profile-picture">
+            <div class="profile-options">
+                <a href="#" id="profileLink"><i class="fas fa-user"></i> Mon Profil</a>
+                <a href="#logout" class="logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            </div>
+        </div>
+        
+        <!-- Version non connectée -->
+        <button href="login-form-container"class="login-btn" id="loginBtn">
+            <i class="far fa-user"></i>
+            Se connecter
+        </button>
+    </div>
+</header> 
+
+
+<div class="login-form-container">
+    <span id="close-login-form" class="fas fa-times"></span>
+    
+    <!-- Formulaire de connexion -->
+    <form id="login-form" action="">
+        <h3>Connexion</h3>
+        <input type="email" placeholder="Email" class="box">
+        <input type="password" placeholder="Mot de passe" class="box">
+        <p> Mot de passe oublié <a href="#">cliquez ici</a> </p>
+        <input type="submit" value="Se connecter" class="btn">
+        <p>ou connectez-vous avec</p>
+        <div class="buttons">
+            <a href="#" class="btn"> Google </a>
+            <a href="#" class="btn"> Facebook </a>
+        </div>
+        <p> Pas de compte ? <a href="#" id="switch-to-signup">Créer un compte</a> </p>
+    </form>
+
+    <!-- Formulaire d'inscription -->
+    <form id="signup-form" action="" style="display: none;">
+        <h3>Inscription</h3>
+        <input type="text" placeholder="Nom complet" class="box">
+        <input type="email" placeholder="Email" class="box">
+        <input type="password" placeholder="Mot de passe" class="box">
+        <input type="password" placeholder="Confirmer le mot de passe" class="box">
+        <input type="submit" value="S'inscrire" class="btn">
+        <p>Déjà un compte ? <a href="#" id="switch-to-login">Se connecter</a> </p>
+    </form>
+</div>
+
+
+
+<section class="home" id="home">
+    <div class="home-content">
+        <h3>Trouvez un professionnel qualifié en un clic !</h3>
+        <p>Service rapide et de qualité pour tous vos besoins en dépannage à domicile</p>
+        <a href="#services" class="btn">Voir nos services</a>
+    </div>
+    <div class="home-image">
+        <img src="plumber-making-deal (1).jpg" alt="Professionnel 3D">
+    </div>
+</section>
+
+
+
+<section class="process-section" id="how-it-works">
+    <h2 class="section-title">Notre <span>processus</span> simple et efficace</h2>
+    <div class="process-steps">
+        <div class="process-card">
+            <div class="process-icon">
+                <i class="fas fa-search"></i>
+                <span class="step-number">1</span>
+            </div>
+            <h3>Trouvez votre service</h3>
+            <p>Parcourez notre catalogue de services et sélectionnez celui qui correspond à vos besoins</p>
+        </div>
+        
+        <div class="process-card">
+            <div class="process-icon">
+                <i class="fas fa-calendar-alt"></i>
+                <span class="step-number">2</span>
+            </div>
+            <h3>Réservez en ligne</h3>
+            <p>Choisissez un créneau horaire qui vous convient et confirmez votre réservation</p>
+        </div>
+        
+        <div class="process-card">
+            <div class="process-icon">
+                <i class="fas fa-user-tie"></i>
+                <span class="step-number">3</span>
+            </div>
+            <h3>Professionnel à domicile</h3>
+            <p>Un expert qualifié se déplace chez vous à l'heure convenue</p>
+        </div>
+    </div>
+  
+</section>
+
+
+<section class="services" id="services">
+    <div class="container">
+        <h2 class="section-title">Nos <span>Services</span></h2>
+        <p class="section-subtitle">Des professionnels qualifiés pour tous vos besoins</p>
+
+        <div class="services-grid">
+            
+            <div class="service-category">
+                <div class="category-header">
+                    <i class="fas fa-tools"></i>
+                    <h3>Réparation & Maintenance</h3>
+             
+                </div>
+                <ul class="service-list">
+                    <li><i class="fas fa-faucet"></i> Plomberie - Fuites, sanitaires, débouchage</li>
+                    <li><i class="fas fa-bolt"></i> Électricité - Installation & dépannage</li>
+                    <li><i class="fas fa-hammer"></i> Menuiserie - Meubles, portes, fenêtres</li>
+                    <li><i class="fas fa-house-damage"></i> Maçonnerie - Rénovations, carrelage</li>
+                    <li><i class="fas fa-key"></i> Serrurerie - Changement de serrure</li>
+                    <li><i class="fas fa-plug"></i> Électroménager - Réparation d'appareils</li>
+                </ul>
+            </div>
+
+            
+            <div class="service-category">
+                <div class="category-header">
+                    <i class="fas fa-broom"></i>
+                    <h3>Nettoyage & Entretien</h3>
+                </div>
+                <ul class="service-list">
+                    <li><i class="fas fa-soap"></i> Ménage - Maisons & bureaux</li>
+                    <li><i class="fas fa-window-maximize"></i> Lavage de vitres</li>
+                    <li><i class="fas fa-car"></i> Nettoyage auto</li>
+                    <li><i class="fas fa-leaf"></i> Jardinage - Taille, entretien</li>
+                </ul>
+            </div>
+
+            
+            <div class="service-category">
+                <div class="category-header">
+                    <i class="fas fa-truck-moving"></i>
+                    <h3>Transport & Déménagement</h3>
+                </div>
+                <ul class="service-list">
+                    <li><i class="fas fa-boxes"></i> Déménagement complet</li>
+                    <li><i class="fas fa-taxi"></i> Chauffeur privé</li>
+                </ul>
+            </div>
+
+            
+            <div class="service-category">
+                <div class="category-header">
+                    <i class="fas fa-paint-roller"></i>
+                    <h3>Rénovation & Décoration</h3>
+                </div>
+                <ul class="service-list">
+                    <li><i class="fas fa-paint-brush"></i> Peinture intérieure/extérieure</li>
+                    <li><i class="fas fa-wallpaper"></i> Papier peint & stickers</li>
+                    <li><i class="fas fa-couch"></i> Décoration intérieure</li>
+                </ul>
+            </div>
+
+            
+            <div class="service-category">
+                <div class="category-header">
+                    <i class="fas fa-laptop"></i>
+                    <h3>Informatique & Électronique</h3>
+                </div>
+                <ul class="service-list">
+                    <li><i class="fas fa-mobile-alt"></i> Réparation smartphones</li>
+                    <li><i class="fas fa-desktop"></i> Réparation ordinateurs</li>
+                    <li><i class="fas fa-video"></i> Caméras de surveillance</li>
+                </ul>
+            </div>
+
+            
+            <div class="service-category">
+                <div class="category-header">
+                    <i class="fas fa-ellipsis-h"></i>
+                    <h3>Services Divers</h3>
+                </div>
+                <ul class="service-list">
+                    <li><i class="fas fa-shopping-basket"></i> Assistant personnel</li>
+                    <li><i class="fas fa-tshirt"></i> Repassage & couture</li>
+                    <li><i class="fas fa-paw"></i> Garde d'animaux</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+           
+<div class="services-button-container">
+    <a href="prestataires.html" class="btn">Services Disponibles</a>
+</div>
+
+</section>
+
+
+<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
+
+<section class="testimonials" id="reviews">
+    <div class="container">
+        <h2 class="section-title">Témoignages <span>Clients</span></h2>
+        <p class="section-subtitle">Ce que nos clients disent de nos services</p>
+        
+        <div class="swiper testimonial-slider">
+            <div class="swiper-wrapper">
+               
+                <div class="swiper-slide">
+                    <div class="testimonial-card">
+                        <div class="client-info">
+                            <img src="smiling-auto-mechanic-with-wrench-standing-hands-folded-white-background.jpg" alt="Client Marie D.">
+                            <div class="client-details">
+                                <h4>Ahmed.B</h4>
+                                <span>Cheraga</span>
+                            </div>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "Un électricien est venu en moins de 2h pour réparer ma panne. Professionnel et efficace, je recommande vivement !"
+                        </p>
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="swiper-slide">
+                    <div class="testimonial-card">
+                        <div class="client-info">
+                            <img src="smiling-auto-mechanic-with-wrench-standing-hands-folded-white-background.jpg" alt="Client Pierre L.">
+                            <div class="client-details">
+                                <h4>Aymen.H</h4>
+                                <span>Kouba</span>
+                            </div>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "Service de plomberie exceptionnel. Le technicien était ponctuel, a résolu le problème rapidement et m'a donné des conseils utiles."
+                        </p>
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="swiper-slide">
+                    <div class="testimonial-card">
+                        <div class="client-info">
+                            <img src="smiling-auto-mechanic-with-wrench-standing-hands-folded-white-background.jpg" alt="Client Sophie T.">
+                            <div class="client-details">
+                                <h4>Amina.M</h4>
+                                <span>Alger</span>
+                            </div>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "J'ai été impressionnée par la rapidité d'intervention et le professionnalisme. Je ferai à nouveau appel à vos services sans hésiter."
+                        </p>
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+           
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+
+<section class="contact" id="contact">
+    <h2 class="section-title">contact <span>US</span></h2>
+    <div class="row">
+
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d204628.4388628644!2d2.9745225732950438!3d36.73890482768424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128fb26977ea659f%3A0x4231102d38a36f49!2sAlger!5e0!3m2!1sfr!2sdz!4v1744223954195!5m2!1sfr!2sdz" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+        <form action="">
+            <h3>Entrer en contact</h3>
+            <input type="text" placeholder="Nom" class="box">
+            <input type="email" placeholder="Email" class="box">
+            <input type="tel" placeholder="Sujet" class="box">
+            <textarea placeholder="Votre message" class="box" cols="30" rows="10"></textarea>
+            <input type="submit" value="Envoyer message" class="btn">
+        </form>
+
+    </div>
+
+</section>
+
+
+<footer class="modern-footer">
+    <div class="footer-container">
+        
+        <div class="footer-col logo-col">
+            <div class="logo-wrapper">
+                <h2 class="footer-logo">TaSli7a</h2>
+                <p class="footer-description">
+                    Votre partenaire de confiance pour des services à domicile de qualité. 
+                    Rapidité, professionnalisme et satisfaction garantis.
+                </p>
+            </div>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+        
+        <div class="footer-col">
+            <h3 class="footer-title">Navigation</h3>
+            <ul class="footer-links">
+                <li><a href="#"><i class="fas fa-chevron-right"></i> Accueil</a></li>
+                <li><a href="#services"><i class="fas fa-chevron-right"></i> Nos Services</a></li>
+                <li><a href="#reviews"><i class="fas fa-chevron-right"></i> Témoignages</a></li>
+                <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+            </ul>
+        </div>
+
+        
+        <div class="footer-col">
+            <h3 class="footer-title">Nos Services</h3>
+            <ul class="footer-services">
+                <li><a href="#"><i class="fas fa-bolt"></i> Électricité</a></li>
+                <li><a href="#"><i class="fas fa-faucet"></i> Plomberie</a></li>
+                <li><a href="#"><i class="fas fa-paint-roller"></i> Peinture</a></li>
+                <li><a href="#"><i class="fas fa-hammer"></i> Menuiserie</a></li>
+                <li><a href="#"><i class="fas fa-wrench"></i> Dépannage</a></li>
+            </ul>
+        </div>
+
+        
+        <div class="footer-col contact-col">
+            <h3 class="footer-title">Contactez-nous</h3>
+            <div class="contact-info">
+                <p><i class="fas fa-map-marker-alt"></i> 123 Rue des Services, Alger</p>
+                <p><i class="fas fa-phone-alt"></i> +33 1 23 45 67 89</p>
+                <p><i class="fas fa-envelope"></i> contact@tasli7a.com</p>
+               
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="footer-bottom">
+        <div class="copyright">
+            &copy; 2025 TaSli7a. Tous droits réservés.
+        </div>
+        <div class="legal-links">
+            <a href="#">Mentions légales</a>
+            <a href="#">Politique de confidentialité</a>
+            <a href="#">CGV</a>
+        </div>
+    </div>
+</footer>
+
+
+<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+<script src="script.js"></script>
+<script>
+// Simulation de l'état de connexion
+let isConnected = false;
+let userType = 'user'; // ou 'provider'
+
+// Éléments du DOM
+const profileMenu = document.getElementById('profileMenu');
+const loginBtn = document.getElementById('loginBtn');
+const profileConnected = profileMenu.querySelector('.profile-connected');
+const profileLink = document.getElementById('profileLink');
+const loginFormContainer = document.querySelector('.login-form-container');
+const closeLoginForm = document.getElementById('close-login-form');
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
+const switchToSignup = document.getElementById('switch-to-signup');
+const switchToLogin = document.getElementById('switch-to-login');
+
+// Fonction pour mettre à jour l'interface selon l'état de connexion
+function updateProfileUI() {
+    if (isConnected) {
+        loginBtn.style.display = 'none';
+        profileConnected.style.display = 'flex';
+        // Mise à jour du lien du profil en fonction du type d'utilisateur
+        profileLink.href = userType === 'provider' ? 'profil-prestataire.html' : 'profil-utilisateur.html';
+        // Fermer le formulaire de connexion si ouvert
+        loginFormContainer.classList.remove('active');
+    } else {
+        loginBtn.style.display = 'flex';
+        profileConnected.style.display = 'none';
+    }
+}
+
+// Ouvrir le formulaire de connexion quand on clique sur "Se connecter"
+loginBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginFormContainer.classList.add('active');
+});
+
+// Fermer le formulaire de connexion
+closeLoginForm.addEventListener('click', () => {
+    loginFormContainer.classList.remove('active');
+});
+
+// Switch vers inscription
+switchToSignup.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'block';
+});
+// Switch vers connexion
+switchToLogin.addEventListener('click', (e) => {
+    e.preventDefault();
+    signupForm.style.display = 'none';
+    loginForm.style.display = 'block';
+});
+
+// Quand on valide le formulaire de connexion
+loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    isConnected = true;
+    updateProfileUI();
+});
+// Quand on valide le formulaire d'inscription
+signupForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    isConnected = true;
+    updateProfileUI();
+});
+
+// Gérer la déconnexion
+profileMenu.querySelector('.logout').addEventListener('click', (e) => {
+    e.preventDefault();
+    isConnected = false;
+    updateProfileUI();
+});
+
+// État initial
+updateProfileUI();
+
+// Swiper et autres scripts existants
+var testimonialSwiper = new Swiper(".testimonial-slider", {
+    grabCursor: true,
+    centeredSlides: true,
+    spaceBetween: 30,
+    loop: true,
+    autoplay: {
+        delay: 8000,
+        disableOnInteraction: false,
+    },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+    },
+    breakpoints: {
+        0: {
+            slidesPerView: 1,
+        },
+        768: {
+            slidesPerView: 2,
+        },
+        1024: {
+            slidesPerView: 3,
+        },
+    },
+});
+
+window.addEventListener('scroll', function() {
+    const header = document.querySelector('.header');
+    header.classList.toggle('active', window.scrollY > 0);
+});
+</script>

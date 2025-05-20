@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>        
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Annuaire des Prestataires</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+:root {
+  --primary: #4CAF50;     /* Vert */
+  --secondary: #FF9800;   /* Orange */
+  --accent: #FFEB3B;      /* Jaune clair */
+  --neutral: #9E9E9E;     /* Gris moyen */
+  --dark: #333333;        /* Noir-gris */
+  --light: #FAFAFA;       /* Blanc cassé */
+  --border: #E0E0E0;      /* Gris clair */
+  --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+}
+
+body {
+  background-color: var(--light);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0; 
+}
+
+.btn {
+  background-color: var(--primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.filters {
+  background-color: white;
+  padding: 40px 50px;
+  margin: 20px auto 60px;
+  max-width: 1100px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  font-size: 17px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px 40px;
+  border: 1px solid var(--border);
+}
+
+.filters label {
+  font-size: 14px;
+  color: var(--dark);
+  margin-bottom: 8px;
+  font-weight: 600;
+  display: block;
+}
+
+.filters select,
+.filters input {
+  padding: 12px 14px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 15px;
+  background-color: var(--light);
+  color: var(--dark);
+  transition: border 0.3s, box-shadow 0.3s;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.filters select:focus,
+.filters input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+
+.prestataires-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 20px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.prestataire-card {
+  background-color: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  transition: all 0.3s ease;
+}
+
+.prestataire-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.prestataire-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.prestataire-card img:hover {
+  opacity: 0.9;
+}
+
+.prestataire-card .card-content {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.rating-stars {
+  color: var(--accent);
+  font-size: 14px;
+}
+
+.prestataire-description {
+  color: var(--neutral);
+  margin: 10px 0;
+}
+.btn-details i, .btn-contact i {
+  margin-right: 8px; /* Ajoute un espacement entre l'icône et le texte */
+}
+
+.service-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.service-list li {
+  display: flex;
+  align-items: center;
+  color: var(--dark);
+  font-size: 14px;
+}
+
+.service-list i {
+  color: var(--primary);
+  margin-right: 8px;
+  font-size: 12px;
+}
+
+.info-footer {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-details, .btn-contact {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-details {
+  background-color: var(--border);
+  color: var(--dark);
+}
+
+.btn-details:hover {
+  background-color: #d1d5db; /* Tu peux créer une variable si tu veux gérer ça aussi */
+}
+
+.btn-contact {
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  color: white;
+}
+
+.btn-contact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.localisation {
+  font-size: 13px;
+  color: var(--neutral);
+}
+
+.avis {
+  font-size: 12px;
+  color: #aaa; /* tu peux remplacer par une variable comme --light-neutral si tu en crées une */
+}
+
+/* Styles du header avec profil */
+.profile-menu {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+
+.profile-options {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.profile-menu:hover .profile-options {
+    opacity: 1;
+    visibility: visible;
+}
+
+.profile-options:hover {
+    opacity: 1;
+    visibility: visible;
+}
+
+.profile-options a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.profile-options a:hover {
+    background-color: #f5f5f5;
+}
+
+.profile-options a i {
+    width: 20px;
+}
+
+.profile-options .logout {
+    color: #dc3545;
+    border-top: 1px solid #eee;
+}
+
+/* Style du bouton de connexion */
+.login-btn {
+    padding: 8px 16px;
+    background-color: #00a65a;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #008d4c;
+}
+
+.page-title {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    color: white;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    font-size: 1.6em;
+
+}
+
+.page-description {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.3em;
+    
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    color: var(--dark);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+}
+
+.service-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.service-content {
+    padding: 20px;
+}
+
+.service-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.service-title {
+    font-size: 24px;
+    color: var(--primary);
+}
+
+.service-description {
+    color: var(--neutral);
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.service-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+}
+
+.service-stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--neutral);
+    font-size: 14px;
+}
+
+.service-stat i {
+    color: var(--primary);
+}
+  </style>
+</head>
+<body>
+
+<header class="header">
+    <div id="menu-btn" class="fas fa-bars"></div>
+    <a href="#" class="logo"> <span>TaSli7a</span>dz</a>
+    <nav class="navbar">
+        <a href="index.html">Accueil</a>
+        <a href="#services">Services</a>
+        <a href="prestataires.html">Prestataires</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <div id="profileMenu" class="profile-menu">
+        <div class="profile-connected" style="display: none;">
+            <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile" class="profile-picture">
+            <div class="profile-options">
+                <a href="#" id="profileLink"><i class="fas fa-user"></i> Mon Profil</a>
+                <a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            </div>
+        </div>
+        <button class="login-btn" id="loginBtn">
+            <i class="far fa-user"></i>
+            Se connecter
+        </button>
+    </div>
+</header>
+
+<!-- Ajout du formulaire de connexion/inscription -->
+<div class="login-form-container">
+    <span id="close-login-form" class="fas fa-times"></span>
+    <!-- Formulaire de connexion -->
+    <form id="login-form" action="">
+        <h3>Connexion</h3>
+        <input type="email" placeholder="Email" class="box">
+        <input type="password" placeholder="Mot de passe" class="box">
+        <p> Mot de passe oublié <a href="#">cliquez ici</a> </p>
+        <input type="submit" value="Se connecter" class="btn">
+        <p>ou connectez-vous avec</p>
+        <div class="buttons">
+            <a href="#" class="btn"> Google </a>
+            <a href="#" class="btn"> Facebook </a>
+        </div>
+        <p> Pas de compte ? <a href="#" id="switch-to-signup">Créer un compte</a> </p>
+    </form>
+    <!-- Formulaire d'inscription -->
+    <form id="signup-form" action="" style="display: none;">
+        <h3>Inscription</h3>
+        <input type="text" placeholder="Nom complet" class="box">
+        <input type="email" placeholder="Email" class="box">
+        <input type="password" placeholder="Mot de passe" class="box">
+        <input type="password" placeholder="Confirmer le mot de passe" class="box">
+        <input type="submit" value="S'inscrire" class="btn">
+        <p>Déjà un compte ? <a href="#" id="switch-to-login">Se connecter</a> </p>
+    </form>
+</div>
+
+<div class="page-title animate__animated animate__fadeIn">
+    <h1>Nos Services</h1>
+    <p class="page-description">Découvrez notre sélection de services professionnels pour tous vos besoins</p>
+</div>
+
+<div class="filters animate__animated animate__fadeInUp">
+    <div class="filter-row">
+        <div class="filter-group-min">
+            <label for="cat-filtre"><i class="fas fa-layer-group"></i></label>
+            <select id="cat-filtre" class="category-filter-min" title="Filtrer par catégorie">
+                <option value="all">Catégorie</option>
+                <option value="electricien">Électricien</option>
+                <option value="plombier">Plombier</option>
+                <option value="peintre">Peintre</option>
+                <option value="informatique">Informatique</option>
+            </select>
+        </div>
+        <div class="filter-group-min">
+            <label for="loc-filtre"><i class="fas fa-map-marker-alt"></i></label>
+            <input id="loc-filtre" type="text" class="location-filter-min" placeholder="Ville" title="Filtrer par ville">
+        </div>
+        <button class="filter-btn-min" title="Filtrer">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</div>
+
+<div class="services-grid">
+    <!-- Les services seront ajoutés ici dynamiquement -->
+</div>
+
+<div id="prestataires-grid" class="prestataires-grid">
+    <!-- Les prestataires seront ajoutés ici dynamiquement -->
+</div>
+
+<script>
+    const services = [
+        {
+            id: 'electricien',
+            titre: 'Électricité',
+            description: 'Installation, réparation et maintenance de systèmes électriques par des professionnels qualifiés',
+            image: 'https://images.pexels.com/photos/442154/pexels-photo-442154.jpeg',
+            icon: 'fas fa-bolt',
+            nombrePrestataires: 15,
+            noteMoyenne: 4.7
+        },
+        {
+            id: 'plombier',
+            titre: 'Plomberie',
+            description: 'Services de plomberie pour particuliers et professionnels : installation, réparation, débouchage',
+            image: 'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg',
+            icon: 'fas fa-faucet',
+            nombrePrestataires: 12,
+            noteMoyenne: 4.6
+        },
+        {
+            id: 'peintre',
+            titre: 'Peinture & Décoration',
+            description: 'Travaux de peinture intérieure et extérieure, papier peint et décoration d\'intérieur',
+            image: 'https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg',
+            icon: 'fas fa-paint-roller',
+            nombrePrestataires: 8,
+            noteMoyenne: 4.8
+        },
+        {
+            id: 'informatique',
+            titre: 'Informatique & Électronique',
+            description: 'Réparation de smartphones, ordinateurs et installation de systèmes de sécurité',
+            image: 'https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg',
+            icon: 'fas fa-laptop',
+            nombrePrestataires: 10,
+            noteMoyenne: 4.5
+        }
+    ];
+
+    const prestataires = [];  // Liste vide de prestataires
+
+    function afficherServices() {
+        const grid = document.querySelector('.services-grid');
+        grid.innerHTML = '';
+
+        services.forEach(service => {
+            const card = document.createElement('a');
+            card.href = `service-prestataires.html?service=${service.id}`;
+            card.className = 'service-card animate__animated animate__fadeIn';
+            
+            card.innerHTML = `
+                <img src="${service.image}" alt="${service.titre}" class="service-image">
+                <div class="service-content">
+                    <div class="service-header">
+                        <i class="${service.icon}"></i>
+                        <h2 class="service-title">${service.titre}</h2>
+                    </div>
+                    <p class="service-description">${service.description}</p>
+                    <div class="service-stats">
+                        <span class="service-stat">
+                            <i class="fas fa-user-tie"></i>
+                            ${service.nombrePrestataires} prestataires
+                        </span>
+                        <span class="service-stat">
+                            <i class="fas fa-star"></i>
+                            ${service.noteMoyenne}
+                        </span>
+                    </div>
+                </div>
+            `;
+            
+            grid.appendChild(card);
+        });
+    }
+
+    function afficherPrestataires() {
+        const grid = document.getElementById('prestataires-grid');
+        grid.innerHTML = '';  // La grille reste vide car il n'y a plus de prestataires
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        afficherServices();
+        afficherPrestataires();
+        
+        document.querySelector('.category-filter-min').addEventListener('change', afficherPrestataires);
+        document.querySelector('.location-filter-min').addEventListener('input', afficherPrestataires);
+    });
+</script>
+
+<script>
+// Gestion du menu de profil et du formulaire de connexion
+let isConnected = false;
+let userType = 'user'; // ou 'provider'
+const profileMenu = document.getElementById('profileMenu');
+const loginBtn = document.getElementById('loginBtn');
+const profileConnected = profileMenu.querySelector('.profile-connected');
+const profileLink = document.getElementById('profileLink');
+const loginFormContainer = document.querySelector('.login-form-container');
+const closeLoginForm = document.getElementById('close-login-form');
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
+const switchToSignup = document.getElementById('switch-to-signup');
+const switchToLogin = document.getElementById('switch-to-login');
+
+function updateProfileUI() {
+    if (isConnected) {
+        loginBtn.style.display = 'none';
+        profileConnected.style.display = 'flex';
+        profileLink.href = userType === 'provider' ? 'profil-prestataire.html' : 'profil-utilisateur.html';
+        loginFormContainer.classList.remove('active');
+    } else {
+        loginBtn.style.display = 'flex';
+        profileConnected.style.display = 'none';
+    }
+}
+
+loginBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginFormContainer.classList.add('active');
+});
+closeLoginForm.addEventListener('click', () => {
+    loginFormContainer.classList.remove('active');
+});
+switchToSignup.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'block';
+});
+switchToLogin.addEventListener('click', (e) => {
+    e.preventDefault();
+    signupForm.style.display = 'none';
+    loginForm.style.display = 'block';
+});
+loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    isConnected = true;
+    updateProfileUI();
+});
+signupForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    isConnected = true;
+    updateProfileUI();
+});
+profileMenu.querySelector('.logout').addEventListener('click', (e) => {
+    e.preventDefault();
+    isConnected = false;
+    updateProfileUI();
+});
+updateProfileUI();
+</script>
+
+</body>
+</html>

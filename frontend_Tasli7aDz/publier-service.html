@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Publier un Service - TaSli7a</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #FF9800;
+            --accent: #FFEB3B;
+            --neutral: #9E9E9E;
+            --dark: #333333;
+            --light: #FAFAFA;
+            --border: #E0E0E0;
+            --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+        }
+
+        .header {
+            position: fixed;
+            top: 15px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 9%;
+            box-shadow: var(--box-shadow);
+            margin: 0 20px;
+            border-radius: 15px;
+        }
+
+        .header .logo {
+            font-size: 2.5rem;
+            font-weight: bolder;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .header .logo span {
+            color: var(--primary);
+        }
+
+        .header .navbar {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .header .navbar a {
+            font-size: 1.7rem;
+            color: var(--dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .header .navbar a:hover {
+            color: var(--primary);
+        }
+
+        .main-content {
+            margin-top: 120px;
+            padding: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .form-title {
+            font-size: 2.4rem;
+            color: var(--dark);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 1.6rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="tel"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1.6rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-label {
+            display: inline-block;
+            padding: 12px 20px;
+            background: var(--light);
+            border: 1px dashed var(--primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.6rem;
+            color: var(--dark);
+            transition: all 0.3s;
+        }
+
+        .file-upload-label:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .services-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .service-tag {
+            background: var(--light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .service-tag i {
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .availability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .time-slot {
+            padding: 8px;
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .time-slot.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            background: #388E3C;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 15px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div id="menu-btn" class="fas fa-bars"></div>
+        <a href="#" class="logo"> <span>TaSli7a</span>dz</a>
+        <nav class="navbar">
+            <a href="index.html">Accueil</a>
+            <a href="#services">Services</a>
+            <a href="prestataires.html">Prestataires</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="form-container">
+            <h1 class="form-title">Publier un Service</h1>
+            <form id="serviceForm">
+                <div class="form-group">
+                    <label for="name">Nom complet</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description de vos services</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Catégorie de service</label>
+                    <select id="category" name="category" required>
+                        <option value="">Sélectionnez une catégorie</option>
+                        <option value="electricien">Électricien</option>
+                        <option value="plombier">Plombier</option>
+                        <option value="menuisier">Menuisier</option>
+                        <option value="peintre">Peintre</option>
+                        <option value="jardinier">Jardinier</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Localisation</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Numéro de téléphone</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="profilePic">Photo de profil</label>
+                    <label for="profilePic" class="file-upload-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        Choisir une photo
+                    </label>
+                    <input type="file" id="profilePic" name="profilePic" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Services proposés</label>
+                    <div class="input-group">
+                        <input type="text" id="serviceInput" placeholder="Ajouter un service">
+                        <button type="button" id="addService">+</button>
+                    </div>
+                    <div id="servicesList" class="services-container"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Disponibilités</label>
+                    <div class="availability-grid" id="availabilityGrid"></div>
+                </div>
+
+                <button type="submit" class="submit-btn">Publier le service</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('serviceForm');
+            const serviceInput = document.getElementById('serviceInput');
+            const addServiceBtn = document.getElementById('addService');
+            const servicesList = document.getElementById('servicesList');
+            const availabilityGrid = document.getElementById('availabilityGrid');
+            const profilePicInput = document.getElementById('profilePic');
+            const fileUploadLabel = document.querySelector('.file-upload-label');
+
+            // Gestion des services
+            let services = [];
+
+            addServiceBtn.addEventListener('click', () => {
+                const service = serviceInput.value.trim();
+                if (service && !services.includes(service)) {
+                    services.push(service);
+                    updateServicesTags();
+                    serviceInput.value = '';
+                }
+            });
+
+            function updateServicesTags() {
+                servicesList.innerHTML = services.map((service, index) => `
+                    <div class="service-tag">
+                        ${service}
+                        <i class="fas fa-times" data-index="${index}"></i>
+                    </div>
+                `).join('');
+
+                // Ajouter les événements de suppression
+                document.querySelectorAll('.service-tag i').forEach(icon => {
+                    icon.addEventListener('click', (e) => {
+                        const index = e.target.dataset.index;
+                        services.splice(index, 1);
+                        updateServicesTags();
+                    });
+                });
+            }
+
+            // Gestion des disponibilités
+            const timeSlots = [
+                '09:00', '10:00', '11:00', '14:00', '15:00', '16:00'
+            ];
+
+            const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+            
+            days.forEach(day => {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'availability-day';
+                dayElement.innerHTML = `
+                    <div class="day-header">${day}</div>
+                    ${timeSlots.map(time => `
+                        <div class="time-slot" data-day="${day}" data-time="${time}">
+                            ${time}
+                        </div>
+                    `).join('')}
+                `;
+                availabilityGrid.appendChild(dayElement);
+            });
+
+            // Gestion de la sélection des créneaux
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.addEventListener('click', () => {
+                    slot.classList.toggle('selected');
+                });
+            });
+
+            // Gestion du changement de photo de profil
+            profilePicInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const fileName = this.files[0].name;
+                    fileUploadLabel.textContent = fileName;
+                }
+            });
+
+            // Soumission du formulaire
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Récupération des créneaux sélectionnés
+                const selectedSlots = {};
+                document.querySelectorAll('.time-slot.selected').forEach(slot => {
+                    const day = slot.dataset.day;
+                    const time = slot.dataset.time;
+                    if (!selectedSlots[day]) selectedSlots[day] = [];
+                    selectedSlots[day].push(time);
+                });
+
+                // Création de l'objet prestataire
+                const formData = {
+                    nom: document.getElementById('name').value,
+                    description: document.getElementById('description').value,
+                    categorie: document.getElementById('category').value,
+                    localisation: document.getElementById('location').value,
+                    telephone: document.getElementById('phone').value,
+                    services: services,
+                    disponibilites: selectedSlots,
+                    note: 0,
+                    avis: []
+                };
+
+                // Simulation d'envoi au serveur
+                console.log('Données du formulaire:', formData);
+                alert('Service publié avec succès !');
+                form.reset();
+                services = [];
+                updateServicesTags();
+                document.querySelectorAll('.time-slot.selected').forEach(slot => {
+                    slot.classList.remove('selected');
+                });
+                fileUploadLabel.textContent = 'Choisir une photo';
+            });
+        });
+    </script>
+</body>
+</html>

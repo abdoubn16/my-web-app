@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Profil Prestataire - TaSli7a</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #FF9800;
+            --accent: #FFEB3B;
+            --neutral: #9E9E9E;
+            --dark: #333333;
+            --light: #FAFAFA;
+            --border: #E0E0E0;
+            --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+        }
+
+        .header {
+            position: fixed;
+            top: 15px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 9%;
+            box-shadow: var(--box-shadow);
+            margin: 0 20px;
+            border-radius: 15px;
+        }
+
+        .header .logo {
+            font-size: 2.5rem;
+            font-weight: bolder;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .header .logo span {
+            color: var(--primary);
+        }
+
+        .main-content {
+            margin-top: 120px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        .profile-sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            height: fit-content;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+        }
+
+        .stylized-profile-image {
+            box-shadow: 0 4px 24px rgba(76,175,80,0.18), 0 1.5px 8px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s, filter 0.3s;
+            cursor: pointer;
+            border: 3px solid var(--primary);
+            background: #f8f8f8;
+            object-fit: cover;
+            width: 150px;
+            height: 150px;
+            display: block;
+        }
+
+        .profile-image-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.35);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            border-radius: 50%;
+            font-size: 2.5rem;
+            pointer-events: none;
+            transition: opacity 0.25s;
+        }
+
+        .profile-image-wrapper:hover .profile-image-overlay,
+        .stylized-profile-image:focus + .profile-image-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile-image-wrapper:hover .stylized-profile-image {
+            filter: brightness(0.75) blur(1px);
+            box-shadow: 0 8px 32px rgba(76,175,80,0.25);
+        }
+
+        .edit-input {
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            font-size: 1.6rem;
+            padding: 1.2rem 1.4rem;
+            box-shadow: 0 2px 8px rgba(76,175,80,0.08);
+            margin-bottom: 8px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .edit-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(76,175,80,0.18);
+            outline: none;
+        }
+
+        .btn-primary, .btn-secondary {
+            border-radius: 8px;
+            font-size: 1.6rem;
+            padding: 12px 0;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 4px rgba(76,175,80,0.08);
+            border: none;
+            outline: none;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:active {
+            background: #256b31;
+            color: #fff;
+            box-shadow: 0 0 0 2px rgba(76,175,80,0.18);
+        }
+        .btn-primary:hover {
+            background: #388E3C;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(76,175,80,0.18);
+        }
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:active {
+            background: #e0e0e0;
+            color: var(--primary);
+        }
+        .btn-secondary:hover {
+            background: var(--border);
+            color: var(--primary);
+        }
+
+        .profile-info h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 10px;
+            background: var(--light);
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 1.4rem;
+            color: var(--dark);
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1.6rem;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .content-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .service-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .service-title {
+            font-size: 1.8rem;
+            color: var(--dark);
+        }
+
+        .service-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .service-action {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .edit-btn {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        .delete-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .service-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 1.4rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat i {
+            color: var(--primary);
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-sidebar {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Style pour le modal de publication de service */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div id="menu-btn" class="fas fa-bars"></div>
+        <a href="#" class="logo"> <span>TaSli7a</span>dz</a>
+        <nav class="navbar">
+            <a href="index.html">Accueil</a>
+            <a href="#services">Services</a>
+            <a href="prestataires.html">Prestataires</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="profile-sidebar">
+            <div class="profile-image-wrapper" style="position:relative; width:150px; margin:0 auto 20px;">
+                <img id="profileImage" src="https://randomuser.me/api/portraits/men/1.jpg" alt="Photo de profil" class="profile-image stylized-profile-image">
+                <input type="file" id="uploadPhoto" accept="image/*" style="display:none">
+                <div class="profile-image-overlay" id="profileImageOverlay">
+                    <i class="fas fa-camera"></i>
+                </div>
+            </div>
+            <div class="profile-info" id="profileInfoView">
+                <h2 id="userName">John Doe</h2>
+                <p id="userEmail"><i class="fas fa-envelope"></i> johndoe@email.com</p>
+                <p id="userPhone"><i class="fas fa-phone"></i> 06 98 76 54 32</p>
+                <button class="btn-primary" id="editProfileBtn" style="width:100%;margin-top:15px;">Modifier mes informations</button>
+            </div>
+            <form id="profileEditForm" style="display:none;flex-direction:column;gap:10px;">
+                <input type="text" id="editName" class="box edit-input" placeholder="Nom complet">
+                <input type="email" id="editEmail" class="box edit-input" placeholder="Email">
+                <input type="tel" id="editPhone" class="box edit-input" placeholder="Téléphone">
+                <div style="display:flex;gap:10px;">
+                  <button type="submit" class="btn-primary" style="flex:1;">Enregistrer</button>
+                  <button type="button" class="btn-secondary" id="cancelEditBtn" style="flex:1;">Annuler</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="profile-content">
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-tools"></i>
+                    Mes Services
+                </h2>
+                <div class="services-grid">
+                    <!-- Les services seront ajoutés ici dynamiquement -->
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i>
+                    Avis Clients
+                </h2>
+                <div class="reviews-list">
+                    <!-- Les avis seront ajoutés ici dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de publication de service -->
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <iframe src="publier-service.html" style="width: 100%; height: 600px; border: none;"></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Bloc gestion profil prestataire (identique utilisateur) ---
+            const profileImage = document.getElementById('profileImage');
+            const uploadPhoto = document.getElementById('uploadPhoto');
+            const profileImageOverlay = document.getElementById('profileImageOverlay');
+            const profileInfoView = document.getElementById('profileInfoView');
+            const editProfileBtn = document.getElementById('editProfileBtn');
+            const profileEditForm = document.getElementById('profileEditForm');
+            const cancelEditBtn = document.getElementById('cancelEditBtn');
+            const editName = document.getElementById('editName');
+            const editEmail = document.getElementById('editEmail');
+            const editPhone = document.getElementById('editPhone');
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+            const userPhone = document.getElementById('userPhone');
+
+            function loadProfileInfos() {
+              const data = JSON.parse(localStorage.getItem('providerProfile')||'{}');
+              if(data.name) userName.textContent = editName.value = data.name;
+              if(data.email) userEmail.innerHTML = `<i class='fas fa-envelope'></i> ${editEmail.value = data.email}`;
+              if(data.phone) userPhone.innerHTML = `<i class='fas fa-phone'></i> ${editPhone.value = data.phone}`;
+              if(data.photo) profileImage.src = data.photo;
+            }
+            loadProfileInfos();
+
+            profileImage.addEventListener('click', () => uploadPhoto.click());
+            profileImageOverlay.addEventListener('click', () => uploadPhoto.click());
+            uploadPhoto.addEventListener('change', () => {
+              const file = uploadPhoto.files[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                  profileImage.src = evt.target.result;
+                  let data = JSON.parse(localStorage.getItem('providerProfile')||'{}');
+                  data.photo = evt.target.result;
+                  localStorage.setItem('providerProfile', JSON.stringify(data));
+                };
+                reader.readAsDataURL(file);
+              }
+            });
+
+            editProfileBtn.addEventListener('click', e => {
+              e.preventDefault();
+              profileInfoView.style.display = 'none';
+              profileEditForm.style.display = 'flex';
+              editName.value = userName.textContent;
+              editEmail.value = userEmail.textContent.replace(/^[^\s]+\s/, '');
+              editPhone.value = userPhone.textContent.replace(/^[^\s]+\s/, '');
+            });
+
+            profileEditForm.addEventListener('submit', e => {
+              e.preventDefault();
+              userName.textContent = editName.value;
+              userEmail.innerHTML = `<i class='fas fa-envelope'></i> ${editEmail.value}`;
+              userPhone.innerHTML = `<i class='fas fa-phone'></i> ${editPhone.value}`;
+              localStorage.setItem('providerProfile', JSON.stringify({
+                name: editName.value,
+                email: editEmail.value,
+                phone: editPhone.value,
+                photo: profileImage.src
+              }));
+              profileEditForm.style.display = 'none';
+              profileInfoView.style.display = 'block';
+            });
+
+            cancelEditBtn.addEventListener('click', e => {
+              e.preventDefault();
+              profileEditForm.style.display = 'none';
+              profileInfoView.style.display = 'block';
+            });
+            // --- Fin bloc gestion profil prestataire ---
+
+            // Données simulées du prestataire
+            const prestataire = {
+                id: 1,
+                nom: "John Doe",
+                services: [
+                    {
+                        id: 1,
+                        titre: "Installation électrique",
+                        reservations: 25,
+                        note: 4.8
+                    },
+                    {
+                        id: 2,
+                        titre: "Dépannage électrique",
+                        reservations: 18,
+                        note: 4.6
+                    },
+                    {
+                        id: 3,
+                        titre: "Mise aux normes",
+                        reservations: 12,
+                        note: 4.9
+                    }
+                ],
+                avis: [
+                    {
+                        auteur: "Marie L.",
+                        date: "15 avril 2025",
+                        note: 5,
+                        commentaire: "Excellent travail, très professionnel et ponctuel."
+                    },
+                    {
+                        auteur: "Ahmed K.",
+                        date: "10 avril 2025",
+                        note: 4,
+                        commentaire: "Bon service, je recommande."
+                    }
+                ]
+            };
+
+            // Affichage des services
+            const servicesGrid = document.querySelector('.services-grid');
+            servicesGrid.innerHTML = prestataire.services.map(service => `
+                <div class="service-card">
+                    <div class="service-header">
+                        <h3 class="service-title">${service.titre}</h3>
+                        <div class="service-actions">
+                            <span class="service-action edit-btn">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                            <span class="service-action delete-btn">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="service-stats">
+                        <div class="stat">
+                            <i class="fas fa-calendar-check"></i>
+                            ${service.reservations} réservations
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-star"></i>
+                            ${service.note}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Affichage des avis
+            const reviewsList = document.querySelector('.reviews-list');
+            reviewsList.innerHTML = prestataire.avis.map(avis => `
+                <div class="review-item">
+                    <div class="review-header">
+                        <span class="review-author">${avis.auteur}</span>
+                        <span class="review-date">${avis.date}</span>
+                    </div>
+                    <div class="review-rating">
+                        ${'<i class="fas fa-star"></i>'.repeat(avis.note)}
+                    </div>
+                    <p class="review-content">${avis.commentaire}</p>
+                </div>
+            `).join('');
+
+            // Gestion du modal de publication de service
+            const modal = document.getElementById('serviceModal');
+            const publishBtn = document.getElementById('publishServiceBtn');
+            const closeBtn = document.querySelector('.close-modal');
+
+            publishBtn.addEventListener('click', () => {
+                modal.style.display = 'block';
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

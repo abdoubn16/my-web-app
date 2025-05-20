@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation de service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+:root {
+    --primary: #4CAF50;
+    --secondary: #FF9800;
+    --accent: #FFEB3B;
+    --neutral: #9E9E9E;
+    --dark: #333333;
+    --light: #FAFAFA;
+    --border: #E0E0E0;
+    --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+}
+
+body {
+    background-color: var(--light);
+    font-family: sans-serif;
+}
+
+.container {
+    max-width: 640px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.header {
+    background-color: var(--primary);
+    color: white;
+    padding: 1.5rem;
+}
+
+.header h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.steps {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.step {
+    flex: 1;
+    text-align: center;
+}
+
+.step div {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.step:nth-child(1) div {
+    background-color: white;
+    color: var(--primary);
+}
+
+.step:nth-child(n+2) div {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.step p {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.content {
+    padding: 1.5rem;
+}
+
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+input,
+select {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem;
+    text-align: center;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-blue {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-blue:hover {
+    background-color: #388E3C;
+}
+
+.btn-gray {
+    background-color: var(--neutral);
+    color: white;
+}
+
+.btn-gray:hover {
+    background-color: #7e7e7e;
+}
+
+.btn-green {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.btn-green:hover {
+    background-color: #e68900;
+}
+
+#map {
+    height: 300px;
+    width: 100%;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.mt-6 {
+    margin-top: 1.5rem;
+}
+
+.space-y-4 > * + * {
+    margin-top: 1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+</style>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>Réservation de service</h1>
+                <div class="steps">
+                    <div class="step">
+                        <div>1</div>
+                        <p>Localisation</p>
+                    </div>
+                    <div class="step">
+                        <div>2</div>
+                        <p>Date</p>
+                    </div>
+                    <div class="step">
+                        <div>3</div>
+                        <p>Confirmation</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Étape 1 -->
+                <div id="step1" class="form-step active">
+                    <h2>Votre localisation</h2>
+                    <div class="mb-4">
+                        <label>Rechercher une adresse</label>
+                        <input type="text" id="search-address" placeholder="Entrez une adresse">
+                        <button onclick="searchAddress()" class="btn btn-blue mt-6">
+                            <i class="fas fa-search"></i> Rechercher
+                        </button>
+                    </div>
+                    <div id="map" class="mb-4"></div>
+                    <div class="space-y-4">
+                        <div>
+                            <label>Adresse sélectionnée</label>
+                            <input type="text" id="adresse" readonly>
+                        </div>
+                        <div class="grid">
+                            <div>
+                                <label>Code postal</label>
+                                <input type="text" id="code-postal" readonly>
+                            </div>
+                            <div>
+                                <label>Ville</label>
+                                <input type="text" id="ville" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="nextStep(1)" class="btn btn-blue mt-6">
+                        Suivant <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Étape 2 -->
+                <div id="step2" class="form-step">
+                    <h2>Date du rendez-vous</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label>Date</label>
+                            <input type="date" id="date-input" min="">
+                        </div>
+                        <div>
+                            <label>Créneau horaire</label>
+                            <select id="time-slot">
+                                <option value="">Sélectionnez un créneau</option>
+                                <option value="08:00-10:00">Matin (8h-10h)</option>
+                                <option value="10:00-12:00">Mi-journée (10h-12h)</option>
+                                <option value="13:00-15:00">Après-midi (13h-15h)</option>
+                                <option value="15:00-17:00">Fin de journée (15h-17h)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-6" style="display: flex; gap: 1rem;">
+                        <button onclick="prevStep(2)" class="btn btn-gray" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </button>
+                        <button onclick="nextStep(2)" class="btn btn-blue" style="flex: 1;">
+                            Suivant <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Étape 3 -->
+                <div id="step3" class="form-step">
+                    <h2>Confirmation</h2>
+                    <div style="background-color: #f3f4f6; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+                        <h3 style="font-weight: 500; margin-bottom: 0.5rem;">Récapitulatif :</h3>
+                        <p id="recap-adresse" style="color: #4b5563;"></p>
+                        <p id="recap-date" style="color: #4b5563; margin-top: 0.5rem;"></p>
+                    </div>
+                    <div>
+                        <label style="display: flex; align-items: flex-start;">
+                            <input type="checkbox" id="confirmation" style="margin-top: 0.25rem; margin-right: 0.5rem;">
+                            <span style="font-size: 0.875rem;">Je confirme ma réservation</span>
+                        </label>
+                    </div>
+                    <div class="mt-6" style="display: flex; gap: 1rem;">
+                        <button onclick="prevStep(3)" class="btn btn-gray" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </button>
+                        <button onclick="confirmReservation()" class="btn btn-green" style="flex: 1;">
+                            Confirmer <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        
+        let map;
+        let marker;
+
+        
+        function initMap() {
+            map = L.map('map').setView([46.603354, 1.888334], 6);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            marker = L.marker([46.603354, 1.888334], {draggable: true}).addTo(map);
+            
+            marker.on('dragend', function(e) {
+                updateAddressFields(e.target.getLatLng());
+            });
+
+            map.on('click', function(e) {
+                marker.setLatLng(e.latlng);
+                updateAddressFields(e.latlng);
+            });
+        }
+
+       
+        function updateAddressFields(latlng) {
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("adresse").value = data.display_name;
+                    document.getElementById("code-postal").value = data.address.postcode || '';
+                    document.getElementById("ville").value = data.address.city || data.address.town || '';
+                });
+        }
+
+        
+        function searchAddress() {
+            const address = document.getElementById("search-address").value;
+            if (!address) return;
+
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${address}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const latLng = L.latLng(data[0].lat, data[0].lon);
+                        map.setView(latLng, 16);
+                        marker.setLatLng(latLng);
+                        updateAddressFields(latLng);
+                    }
+                });
+        }
+
+        
+        function showStep(step) {
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+        }
+
+        function nextStep(currentStep) {
+            if (currentStep === 1 && !document.getElementById("adresse").value) {
+                alert("Veuillez sélectionner une adresse");
+                return;
+            }
+            if (currentStep === 2) {
+                const date = document.getElementById("date-input").value;
+                const timeSlot = document.getElementById("time-slot").value;
+                if (!date || !timeSlot) {
+                    alert("Veuillez sélectionner une date et un créneau");
+                    return;
+                }
+                const formattedDate = new Date(date).toLocaleDateString('fr-FR', 
+                    {weekday: 'long', day: 'numeric', month: 'long'});
+                document.getElementById("recap-adresse").textContent = 
+                    `Adresse: ${document.getElementById("adresse").value}`;
+                document.getElementById("recap-date").textContent = 
+                    `Date: ${formattedDate} entre ${timeSlot}`;
+            }
+            showStep(currentStep + 1);
+        }
+
+        function prevStep(currentStep) {
+            showStep(currentStep - 1);
+        }
+
+        function confirmReservation() {
+            if (!document.getElementById('confirmation').checked) {
+                alert('Veuillez confirmer votre réservation');
+                return;
+            }
+            alert('Réservation confirmée !');
+        }
+
+       
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+            document.getElementById('date-input').min = new Date().toISOString().split('T')[0];
+        });
+    </script>
+</body>
+</html>
